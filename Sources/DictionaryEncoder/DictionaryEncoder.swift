@@ -5,10 +5,16 @@
 import Foundation
 
 public class DictionaryEncoder {
-    public static func encode<T: Encodable>(_ value: T) -> [String: Any?] {
+    public static func encode<T>(_ value: T) -> [String: Any?] where T: Encodable {
         let encoder = DictionaryEncoding(to: RootData())
         try! value.encode(to: encoder)
         return encoder.output!
+    }
+
+    public static func encode<T>(_ value: T) -> [[String: Any?]] where T: Encodable, T: Collection, T.Element: Encodable {
+        value.map {
+            encode($0)
+        }
     }
 }
 
