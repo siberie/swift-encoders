@@ -73,26 +73,14 @@ struct UnkeyedValueContainer: UnkeyedEncodingContainer {
         try value.encode(to: encoder)
     }
 
-
     mutating func nestedContainer<NestedKey>(
         keyedBy keyType: NestedKey.Type
     ) -> KeyedEncodingContainer<NestedKey> where NestedKey: CodingKey {
-        let data = KeyedData()
-        container.encode(key: codingPath, data: data)
-
-        let container = KeyedValueContainer<NestedKey>(
-            to: data,
-            codingPath: codingPath,
-            ignoreNilValues: ignoreNilValues
-        )
-        return KeyedEncodingContainer(container)
+        fatalError("nestedContainer(keyedBy:) has not been implemented")
     }
 
     mutating func nestedUnkeyedContainer() -> UnkeyedEncodingContainer {
-        let data = UnkeyedData()
-        container.encode(key: codingPath, data: data)
-        let container = UnkeyedValueContainer(to: data, codingPath: codingPath, ignoreNilValues: ignoreNilValues)
-        return container
+        fatalError("nestedContainer(keyedBy:) has not been implemented")
     }
 
     func superEncoder() -> Encoder {

@@ -55,7 +55,11 @@ struct KeyedValueContainer<Key>: KeyedEncodingContainerProtocol where Key: Codin
             return
         }
 
-        let encoder = DictionaryEncoding(to: container, codingPath: codingPath + [key], ignoreNilValues: ignoreNilValues)
+        let encoder = DictionaryEncoding(
+            to: container,
+            codingPath: codingPath + [key],
+            ignoreNilValues: ignoreNilValues
+        )
         try value.encode(to: encoder)
     }
 
@@ -63,11 +67,7 @@ struct KeyedValueContainer<Key>: KeyedEncodingContainerProtocol where Key: Codin
         keyedBy keyType: NestedKey.Type,
         forKey key: Key
     ) -> KeyedEncodingContainer<NestedKey> where NestedKey: CodingKey {
-        let data = KeyedData()
-        container.encode(key: codingPath + [key], data: data)
-
-        let container = KeyedValueContainer<NestedKey>(to: data, codingPath: codingPath + [key], ignoreNilValues: ignoreNilValues)
-        return KeyedEncodingContainer(container)
+        fatalError("nestedContainer(keyedBy:) has not been implemented")
     }
 
     func nestedUnkeyedContainer(forKey key: Key) -> UnkeyedEncodingContainer {
