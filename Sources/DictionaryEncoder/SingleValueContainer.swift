@@ -7,13 +7,19 @@ import Foundation
 struct SingleValueContainer: SingleValueEncodingContainer {
     let codingPath: [CodingKey]
     private let container: SingleData
+    private let ignoreNilValues: Bool
 
-    init(to container: SingleData, codingPath: [CodingKey] = []) {
+    init(to container: SingleData, codingPath: [CodingKey] = [], ignoreNilValues: Bool = false) {
         self.container = container
         self.codingPath = codingPath
+        self.ignoreNilValues = ignoreNilValues
     }
 
     mutating func encodeNil() throws {
+        guard !ignoreNilValues else {
+            return
+        }
+
         container.encode(key: codingPath, value: nil)
     }
 
@@ -35,7 +41,7 @@ struct SingleValueContainer: SingleValueEncodingContainer {
             return
         }
 
-        let encoder = DictionaryEncoding(to: container, codingPath: codingPath)
+        let encoder = DictionaryEncoding(to: container, codingPath: codingPath, ignoreNilValues: ignoreNilValues)
         try value.encode(to: encoder)
     }
 }

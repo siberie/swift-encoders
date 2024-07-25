@@ -5,13 +5,19 @@
 import Foundation
 
 public class DictionaryEncoder {
-    public static func encode<T>(_ value: T) -> [String: Any?] where T: Encodable {
-        let encoder = DictionaryEncoding(to: RootData())
+    let ignoreNilValues: Bool
+
+    public init(ignoreNilValues: Bool = false) {
+        self.ignoreNilValues = ignoreNilValues
+    }
+
+    public func encode<T>(_ value: T) -> [String: Any?] where T: Encodable {
+        let encoder = DictionaryEncoding(to: RootData(), ignoreNilValues: ignoreNilValues)
         try! value.encode(to: encoder)
         return encoder.output!
     }
 
-    public static func encode<T>(_ value: T) -> [[String: Any?]] where T: Encodable, T: Collection, T.Element: Encodable {
+    public func encode<T>(_ value: T) -> [[String: Any?]] where T: Encodable, T: Collection, T.Element: Encodable {
         value.map {
             encode($0)
         }
@@ -22,10 +28,12 @@ struct DictionaryEncoding: Encoder {
     private(set) var codingPath: [CodingKey]
     private(set) var userInfo: [CodingUserInfoKey: Any] = [:]
     private let data: DataProtocol
+    private let ignoreNilValues: Bool
 
-    public init(to data: DataProtocol, codingPath: [CodingKey] = []) {
+    public init(to data: DataProtocol, codingPath: [CodingKey] = [], ignoreNilValues: Bool = false) {
         self.data = data
         self.codingPath = codingPath
+        self.ignoreNilValues = ignoreNilValues
     }
 
     var output: Dictionary<String, Any?>? {
@@ -36,7 +44,7 @@ struct DictionaryEncoding: Encoder {
         let data = KeyedData()
         self.data.encode(key: codingPath, data: data)
 
-        let container = KeyedValueContainer<Key>(to: data, codingPath: codingPath)
+        let container = KeyedValueContainer<Key>(to: data, codingPath: codingPath, ignoreNilValues: ignoreNilValues)
 
         return KeyedEncodingContainer(container)
     }
@@ -44,13 +52,13 @@ struct DictionaryEncoding: Encoder {
     func unkeyedContainer() -> UnkeyedEncodingContainer {
         let data = UnkeyedData()
         self.data.encode(key: codingPath, data: data)
-        return UnkeyedValueContainer(to: data, codingPath: codingPath)
+        return UnkeyedValueContainer(to: data, codingPath: codingPath, ignoreNilValues: ignoreNilValues)
     }
 
     func singleValueContainer() -> SingleValueEncodingContainer {
         let data = SingleData()
         self.data.encode(key: codingPath, data: data)
 
-        return SingleValueContainer(to: data, codingPath: codingPath)
+        return SingleValueContainer(to: data, codingPath: codingPath, ignoreNilValues: ignoreNilValues)
     }
 }

@@ -8,28 +8,40 @@ import Foundation
 struct KeyedValueContainer<Key>: KeyedEncodingContainerProtocol where Key: CodingKey {
     let codingPath: [CodingKey]
     private let container: KeyedData
+    private let ignoreNilValues: Bool
 
-    init(to container: KeyedData, codingPath: [CodingKey] = []) {
+    init(to container: KeyedData, codingPath: [CodingKey] = [], ignoreNilValues: Bool = false) {
         self.container = container
         self.codingPath = codingPath
+        self.ignoreNilValues = ignoreNilValues
     }
 
     mutating func encodeIfPresent(_ value: Int?, forKey key: Key) throws {
-        print("KeyedValueContainer.encodeIfPresent(_:forKey:)")
+        guard value != nil || !ignoreNilValues else {
+            return
+        }
         container.encode(key: codingPath + [key], value: value)
     }
 
     mutating func encodeIfPresent(_ value: String?, forKey key: Key) throws {
-        print("KeyedValueContainer.encodeIfPresent(_:forKey:)")
+        guard value != nil || !ignoreNilValues else {
+            return
+        }
         container.encode(key: codingPath + [key], value: value)
     }
 
     mutating func encodeNil(forKey key: Key) throws {
-        print("KeyedValueContainer.encodeNil(forKey:)")
+        guard !ignoreNilValues else {
+            return
+        }
         container.encode(key: codingPath + [key], value: nil)
     }
 
     mutating func encodeIfPresent<T>(_ value: T?, forKey key: Key) throws where T: Encodable {
+        guard value != nil || !ignoreNilValues else {
+            return
+        }
+
         if let value {
             try encode(value, forKey: key)
         } else {
@@ -43,7 +55,7 @@ struct KeyedValueContainer<Key>: KeyedEncodingContainerProtocol where Key: Codin
             return
         }
 
-        let encoder = DictionaryEncoding(to: container, codingPath: codingPath + [key])
+        let encoder = DictionaryEncoding(to: container, codingPath: codingPath + [key], ignoreNilValues: ignoreNilValues)
         try value.encode(to: encoder)
     }
 
@@ -54,7 +66,7 @@ struct KeyedValueContainer<Key>: KeyedEncodingContainerProtocol where Key: Codin
         let data = KeyedData()
         container.encode(key: codingPath + [key], data: data)
 
-        let container = KeyedValueContainer<NestedKey>(to: data, codingPath: codingPath + [key])
+        let container = KeyedValueContainer<NestedKey>(to: data, codingPath: codingPath + [key], ignoreNilValues: ignoreNilValues)
         return KeyedEncodingContainer(container)
     }
 

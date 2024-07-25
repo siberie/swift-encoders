@@ -47,17 +47,22 @@ class KeyedData: DataProtocol {
 }
 
 class SingleData: DataProtocol {
-    var value: Any?
+    var data: DataProtocol?
+    var singleValue: Any?
+    var value: Any? {
+        data?.value ?? singleValue
+    }
 
     init(value: Any? = nil) {
-        self.value = value
+        self.singleValue = value
     }
 
     func encode(key: [CodingKey], value: Any?) {
-        self.value = value
+        self.singleValue = value
     }
 
     func encode(key: [CodingKey], data: DataProtocol) {
+        self.data = data
     }
 }
 

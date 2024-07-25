@@ -12,14 +12,47 @@ struct UnkeyedValueContainer: UnkeyedEncodingContainer {
 
     let codingPath: [CodingKey]
     private let container: UnkeyedData
+    private let ignoreNilValues: Bool
 
-    init(to container: UnkeyedData, codingPath: [CodingKey] = []) {
+
+    init(to container: UnkeyedData, codingPath: [CodingKey] = [], ignoreNilValues: Bool = false) {
         self.container = container
         self.codingPath = codingPath
+        self.ignoreNilValues = ignoreNilValues
     }
 
     mutating func encodeNil() throws {
+        guard !ignoreNilValues else {
+            return
+        }
+
         container.encode(key: codingPath, value: nil)
+    }
+
+    mutating func encodeIfPresent(_ value: Int?) throws {
+        guard value != nil || !ignoreNilValues else {
+            return
+        }
+        container.encode(key: codingPath, value: value)
+    }
+
+    mutating func encodeIfPresent(_ value: String?) throws {
+        guard value != nil || !ignoreNilValues else {
+            return
+        }
+        container.encode(key: codingPath, value: value)
+    }
+
+    mutating func encodeIfPresent<T>(_ value: T?) throws where T: Encodable {
+        guard value != nil || !ignoreNilValues else {
+            return
+        }
+
+        if let value {
+            try encode(value)
+        } else {
+            container.encode(key: codingPath, value: nil)
+        }
     }
 
     mutating func encode(_ value: Int) throws {
@@ -36,9 +69,10 @@ struct UnkeyedValueContainer: UnkeyedEncodingContainer {
             return
         }
 
-        let encoder = DictionaryEncoding(to: container, codingPath: codingPath)
+        let encoder = DictionaryEncoding(to: container, codingPath: codingPath, ignoreNilValues: ignoreNilValues)
         try value.encode(to: encoder)
     }
+
 
     mutating func nestedContainer<NestedKey>(
         keyedBy keyType: NestedKey.Type
@@ -46,14 +80,18 @@ struct UnkeyedValueContainer: UnkeyedEncodingContainer {
         let data = KeyedData()
         container.encode(key: codingPath, data: data)
 
-        let container = KeyedValueContainer<NestedKey>(to: data, codingPath: codingPath)
+        let container = KeyedValueContainer<NestedKey>(
+            to: data,
+            codingPath: codingPath,
+            ignoreNilValues: ignoreNilValues
+        )
         return KeyedEncodingContainer(container)
     }
 
     mutating func nestedUnkeyedContainer() -> UnkeyedEncodingContainer {
         let data = UnkeyedData()
         container.encode(key: codingPath, data: data)
-        let container = UnkeyedValueContainer(to: data, codingPath: codingPath)
+        let container = UnkeyedValueContainer(to: data, codingPath: codingPath, ignoreNilValues: ignoreNilValues)
         return container
     }
 

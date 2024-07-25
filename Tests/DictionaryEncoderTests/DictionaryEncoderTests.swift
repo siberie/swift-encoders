@@ -8,7 +8,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 0)
@@ -21,7 +21,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -35,7 +35,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -49,7 +49,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -68,7 +68,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -82,7 +82,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -100,7 +100,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -114,7 +114,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -128,7 +128,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -142,7 +142,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -165,7 +165,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -181,7 +181,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -202,7 +202,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -218,11 +218,24 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
         XCTAssertNil(result["x"]!)
+    }
+
+    func testStructWithOptionalIntIgnoreNil() throws {
+        struct TestStruct: Encodable {
+            let x: Int? = nil
+        }
+
+        let testData = TestStruct()
+
+        let result = DictionaryEncoder(ignoreNilValues: true).encode(testData)
+
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result.keys.count, 0)
     }
 
     func testStructWithOptionalString() throws {
@@ -232,7 +245,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -246,7 +259,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -260,7 +273,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -278,7 +291,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -292,7 +305,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -306,7 +319,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -320,7 +333,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -334,7 +347,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -352,7 +365,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -366,10 +379,24 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
+    }
+
+    func testStructWithArrayOfOptionalIntIgnoreNils() throws {
+        struct TestStruct: Encodable {
+            let x: [Int?] = [1, nil, 2]
+        }
+
+        let testData = TestStruct()
+
+        let result = DictionaryEncoder(ignoreNilValues: true).encode(testData)
+
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result.keys.count, 1)
+        XCTAssertEqual(result["x"] as? [Int?], [1, nil, 2])
     }
 
     func testStructWithArrayOfOptionalString() throws {
@@ -379,7 +406,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -392,10 +419,28 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
+    }
+
+    func testStructWithArrayOfOptionalDateIgnoreNils() throws {
+        struct TestStruct: Encodable {
+            let x: [Date?] = [Date(timeIntervalSince1970: 0), nil, Date(timeIntervalSince1970: 1)]
+        }
+
+        let testData = TestStruct()
+
+        let result = DictionaryEncoder(ignoreNilValues: true).encode(testData)
+
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result.keys.count, 1)
+        XCTAssertEqual((result["x"] as? [Date?])?.count, 3)
+        XCTAssertEqual(
+            (result["x"] as? [Date?]),
+            [Date(timeIntervalSince1970: 0), nil, Date(timeIntervalSince1970: 1)]
+        )
     }
 
     func testStructWithArrayOfOptionalDictionary() throws {
@@ -405,10 +450,28 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
+    }
+
+    func testStructWithArrayOfOptionalDictionaryIgnoreNils() throws {
+        struct TestStruct: Encodable {
+            let x: [[String: Int]?] = [["a": 1], nil, ["b": 2]]
+        }
+
+        let testData = TestStruct()
+
+        let result = DictionaryEncoder(ignoreNilValues: true).encode(testData)
+
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result.keys.count, 1)
+        XCTAssertEqual((result["x"] as? [[String: Int]?])?.count, 3)
+        XCTAssertEqual(
+            (result["x"] as? [[String: Int]?]),
+            [["a": 1], nil, ["b": 2]]
+        )
     }
 
     func testStructWithArrayOfOptionalNestedStruct() throws {
@@ -422,10 +485,32 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
+    }
+
+    func testStructWithArrayOfOptionalNestedStructIgnoreNils() throws {
+        struct NestedStruct: Encodable {
+            let y: Int = 1
+        }
+
+        struct TestStruct: Encodable {
+            let x: [NestedStruct?] = [NestedStruct(), nil, NestedStruct()]
+        }
+
+        let testData = TestStruct()
+
+        let result = DictionaryEncoder(ignoreNilValues: true).encode(testData)
+
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result.keys.count, 1)
+        XCTAssertEqual((result["x"] as? [[String: Int]?])?.count, 3)
+        XCTAssertEqual(
+            (result["x"] as? [[String: Int]?]),
+            [["y": 1], nil, ["y": 1]]
+        )
     }
 
     func testStructWithArrayOfArrays() throws {
@@ -435,7 +520,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -449,7 +534,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 2)
@@ -465,7 +550,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 2)
@@ -486,7 +571,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 2)
@@ -506,7 +591,7 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder.encode(testData)
+        let result = DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result.keys.count, 1)
@@ -520,8 +605,8 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = [TestStruct(), TestStruct()]
 
-        let result = DictionaryEncoder.encode(testData)
-        
+        let result = DictionaryEncoder().encode(testData)
+
         XCTAssertNotNil(result)
         XCTAssertEqual(result.count, 2)
         XCTAssertEqual((result[0])["x"] as? Int, 1)
