@@ -472,4 +472,43 @@ final class DictionaryEncoderTests: XCTestCase {
         XCTAssertEqual(result["x"] as? String, "a")
         XCTAssertEqual(result["y"] as? String, "b")
     }
+
+    func testStructWithCodingKeys() throws {
+        struct TestStruct: Encodable {
+            let x = 1
+            let y = 2
+
+            enum CodingKeys: String, CodingKey {
+                case x = "a"
+                case y = "b"
+            }
+        }
+
+        let testData = TestStruct()
+
+        let result = DictionaryEncoder.encode(testData)
+
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result.keys.count, 2)
+        XCTAssertEqual(result["a"] as? Int, 1)
+        XCTAssertEqual(result["b"] as? Int, 2)
+    }
+    func testStructWithCodingKeysNotFull() throws {
+        struct TestStruct: Encodable {
+            let x = 1
+            let y = 2
+
+            enum CodingKeys: String, CodingKey {
+                case x = "a"
+            }
+        }
+
+        let testData = TestStruct()
+
+        let result = DictionaryEncoder.encode(testData)
+
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result.keys.count, 1)
+        XCTAssertEqual(result["a"] as? Int, 1)
+    }
 }
