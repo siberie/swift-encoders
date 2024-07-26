@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "DictionaryEncoder",
+    name: "SwiftEncoders",
     platforms: [
         .iOS(.v12),
         .macOS(.v10_13),

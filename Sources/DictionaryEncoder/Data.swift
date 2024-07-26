@@ -54,11 +54,11 @@ class SingleData: DataProtocol {
     }
 
     init(value: Any? = nil) {
-        self.singleValue = value
+        singleValue = value
     }
 
     func encode(key: [CodingKey], value: Any?) {
-        self.singleValue = value
+        singleValue = value
     }
 
     func encode(key: [CodingKey], data: DataProtocol) {
