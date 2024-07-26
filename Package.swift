@@ -25,5 +25,13 @@ let package = Package(
         .testTarget(
             name: "DictionaryEncoderTests",
             dependencies: ["DictionaryEncoder"]),
-    ]
+        .target(
+            name: "QueryStringEncoder"
+        ),
+        .testTarget(
+            name: "QueryStringEncoderTests",
+            dependencies: ["QueryStringEncoder"]
+        )
+    ],
+    swiftLanguageVersions: [.v5]
 )
