@@ -12,14 +12,14 @@ let package = Package(
         .tvOS(.v12)
     ],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "DictionaryEncoder",
             targets: ["DictionaryEncoder"]),
+        .library(
+            name: "QueryStringEncoder",
+            targets: ["QueryStringEncoder"]),
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "DictionaryEncoder"),
         .testTarget(
