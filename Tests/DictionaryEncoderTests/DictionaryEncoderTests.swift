@@ -8,10 +8,10 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 0)
+        XCTAssertEqual(result?.keys.count, 0)
     }
 
     func testStructWithInt() throws {
@@ -21,11 +21,25 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertEqual(result["x"] as? Int, 1)
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertEqual(result?["x"] as? Int, 1)
+    }
+
+    func testStructWithBool() throws {
+        struct TestStruct: Encodable {
+            let x = true
+        }
+
+        let testData = TestStruct()
+
+        let result = try? DictionaryEncoder().encode(testData)
+
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertEqual(result?["x"] as? Bool, true)
     }
 
     func testStructWithString() throws {
@@ -35,11 +49,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertEqual(result["x"] as? String, "abc")
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertEqual(result?["x"] as? String, "abc")
     }
 
     func testStructWithDate() throws {
@@ -49,11 +63,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertEqual(result["x"] as? Date, Date(timeIntervalSince1970: 0))
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertEqual(result?["x"] as? Date, Date(timeIntervalSince1970: 0))
     }
 
     func testStructWithCodableEnum() throws {
@@ -68,11 +82,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertEqual(result["x"] as? String, "a")
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertEqual(result?["x"] as? String, "a")
     }
 
     func testStructWithDictionary() throws {
@@ -82,11 +96,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertEqual(result["x"] as? [String: Int], ["a": 1, "b": 2])
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertEqual(result?["x"] as? [String: Int], ["a": 1, "b": 2])
     }
 
     func testStructWithNestedStruct() throws {
@@ -100,11 +114,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertEqual(result["x"] as? [String: Int], ["y": 1])
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertEqual(result?["x"] as? [String: Int], ["y": 1])
     }
 
     func testStructWithIntArray() throws {
@@ -114,11 +128,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertEqual(result["x"] as? [Int], [1, 2, 3])
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertEqual(result?["x"] as? [Int], [1, 2, 3])
     }
 
     func testStructWithStringArray() throws {
@@ -128,11 +142,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertEqual(result["x"] as? [String], ["a", "b", "c"])
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertEqual(result?["x"] as? [String], ["a", "b", "c"])
     }
 
     func testStructWithDateArray() throws {
@@ -142,13 +156,13 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertEqual((result["x"] as? [Date])?.count, 2)
-        XCTAssertEqual((result["x"] as? [Date])?[0], Date(timeIntervalSince1970: 0))
-        XCTAssertEqual((result["x"] as? [Date])?[1], Date(timeIntervalSince1970: 1))
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertEqual((result?["x"] as? [Date])?.count, 2)
+        XCTAssertEqual((result?["x"] as? [Date])?[0], Date(timeIntervalSince1970: 0))
+        XCTAssertEqual((result?["x"] as? [Date])?[1], Date(timeIntervalSince1970: 1))
 
     }
 
@@ -165,13 +179,13 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertEqual((result["x"] as? [String])?.count, 2)
-        XCTAssertEqual((result["x"] as? [String])?[0], "a")
-        XCTAssertEqual((result["x"] as? [String])?[1], "b")
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertEqual((result?["x"] as? [String])?.count, 2)
+        XCTAssertEqual((result?["x"] as? [String])?[0], "a")
+        XCTAssertEqual((result?["x"] as? [String])?[1], "b")
     }
 
     func testStructWithDictionaryArray() throws {
@@ -181,13 +195,13 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertEqual((result["x"] as? [[String: Int]])?.count, 2)
-        XCTAssertEqual((result["x"] as? [[String: Any?]])?[0]["a"] as? Int, 1)
-        XCTAssertEqual((result["x"] as? [[String: Any?]])?[1]["b"] as? Int, 2)
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertEqual((result?["x"] as? [[String: Int]])?.count, 2)
+        XCTAssertEqual((result?["x"] as? [[String: Any?]])?[0]["a"] as? Int, 1)
+        XCTAssertEqual((result?["x"] as? [[String: Any?]])?[1]["b"] as? Int, 2)
     }
 
 
@@ -202,13 +216,13 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertEqual((result["x"] as? [Any])?.count, 2)
-        XCTAssertEqual((result["x"] as? [[String: Any?]])?[0]["y"] as? Int, 1)
-        XCTAssertEqual((result["x"] as? [[String: Any?]])?[1]["y"] as? Int, 2)
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertEqual((result?["x"] as? [Any])?.count, 2)
+        XCTAssertEqual((result?["x"] as? [[String: Any?]])?[0]["y"] as? Int, 1)
+        XCTAssertEqual((result?["x"] as? [[String: Any?]])?[1]["y"] as? Int, 2)
     }
 
     func testStructWithOptionalInt() throws {
@@ -218,11 +232,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertNil(result["x"]!)
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertNil(result?["x"]!)
     }
 
     func testStructWithOptionalIntIgnoreNil() throws {
@@ -232,10 +246,10 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder(ignoreNilValues: true).encode(testData)
+        let result = try? DictionaryEncoder(ignoreNilValues: true).encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 0)
+        XCTAssertEqual(result?.keys.count, 0)
     }
 
     func testStructWithOptionalString() throws {
@@ -245,11 +259,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertNil(result["x"]!)
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertNil(result?["x"]!)
     }
 
     func testStructWithOptionalDate() throws {
@@ -259,11 +273,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertNil(result["x"]!)
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertNil(result?["x"]!)
     }
 
     func testStructWithOptionalDictionary() throws {
@@ -273,11 +287,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertNil(result["x"]!)
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertNil(result?["x"]!)
     }
 
     func testStructWithOptionalNestedStruct() throws {
@@ -291,11 +305,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertNil(result["x"]!)
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertNil(result?["x"]!)
     }
 
     func testStructWithOptionalIntArray() throws {
@@ -305,11 +319,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertNil(result["x"]!)
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertNil(result?["x"]!)
     }
 
     func testStructWithOptionalStringArray() throws {
@@ -319,11 +333,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertNil(result["x"]!)
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertNil(result?["x"]!)
     }
 
     func testStructWithOptionalDateArray() throws {
@@ -333,11 +347,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertNil(result["x"]!)
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertNil(result?["x"]!)
     }
 
     func testStructWithOptionalDictionaryArray() throws {
@@ -347,11 +361,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertNil(result["x"]!)
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertNil(result?["x"]!)
     }
 
     func testStructWithOptionalNestedStructArray() throws {
@@ -365,11 +379,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertNil(result["x"]!)
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertNil(result?["x"]!)
     }
 
     func testStructWithArrayOfOptionalInt() throws {
@@ -379,10 +393,10 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
+        XCTAssertEqual(result?.keys.count, 1)
     }
 
     func testStructWithArrayOfOptionalIntIgnoreNils() throws {
@@ -392,11 +406,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder(ignoreNilValues: true).encode(testData)
+        let result = try? DictionaryEncoder(ignoreNilValues: true).encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertEqual(result["x"] as? [Int?], [1, nil, 2])
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertEqual(result?["x"] as? [Int?], [1, nil, 2])
     }
 
     func testStructWithArrayOfOptionalString() throws {
@@ -406,10 +420,10 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
+        XCTAssertEqual(result?.keys.count, 1)
     }
 
     func testStructWithArrayOfOptionalDate() throws {
@@ -419,10 +433,10 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
+        XCTAssertEqual(result?.keys.count, 1)
     }
 
     func testStructWithArrayOfOptionalDateIgnoreNils() throws {
@@ -432,13 +446,13 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder(ignoreNilValues: true).encode(testData)
+        let result = try? DictionaryEncoder(ignoreNilValues: true).encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertEqual((result["x"] as? [Date?])?.count, 3)
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertEqual((result?["x"] as? [Date?])?.count, 3)
         XCTAssertEqual(
-            (result["x"] as? [Date?]),
+            (result?["x"] as? [Date?]),
             [Date(timeIntervalSince1970: 0), nil, Date(timeIntervalSince1970: 1)]
         )
     }
@@ -450,10 +464,10 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
+        XCTAssertEqual(result?.keys.count, 1)
     }
 
     func testStructWithArrayOfOptionalDictionaryIgnoreNils() throws {
@@ -463,13 +477,13 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder(ignoreNilValues: true).encode(testData)
+        let result = try?  DictionaryEncoder(ignoreNilValues: true).encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertEqual((result["x"] as? [[String: Int]?])?.count, 3)
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertEqual((result?["x"] as? [[String: Int]?])?.count, 3)
         XCTAssertEqual(
-            (result["x"] as? [[String: Int]?]),
+            (result?["x"] as? [[String: Int]?]),
             [["a": 1], nil, ["b": 2]]
         )
     }
@@ -485,10 +499,10 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
+        XCTAssertEqual(result?.keys.count, 1)
     }
 
     func testStructWithArrayOfOptionalNestedStructIgnoreNils() throws {
@@ -502,13 +516,13 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder(ignoreNilValues: true).encode(testData)
+        let result = try? DictionaryEncoder(ignoreNilValues: true).encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertEqual((result["x"] as? [[String: Int]?])?.count, 3)
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertEqual((result?["x"] as? [[String: Int]?])?.count, 3)
         XCTAssertEqual(
-            (result["x"] as? [[String: Int]?]),
+            (result?["x"] as? [[String: Int]?]),
             [["y": 1], nil, ["y": 1]]
         )
     }
@@ -520,10 +534,10 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
+        XCTAssertEqual(result?.keys.count, 1)
     }
 
     func testStructWithTwoInts() throws {
@@ -534,12 +548,12 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 2)
-        XCTAssertEqual(result["x"] as? Int, 1)
-        XCTAssertEqual(result["y"] as? Int, 2)
+        XCTAssertEqual(result?.keys.count, 2)
+        XCTAssertEqual(result?["x"] as? Int, 1)
+        XCTAssertEqual(result?["y"] as? Int, 2)
     }
 
     func testStructWithTwoStrings() throws {
@@ -550,12 +564,12 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 2)
-        XCTAssertEqual(result["x"] as? String, "a")
-        XCTAssertEqual(result["y"] as? String, "b")
+        XCTAssertEqual(result?.keys.count, 2)
+        XCTAssertEqual(result?["x"] as? String, "a")
+        XCTAssertEqual(result?["y"] as? String, "b")
     }
 
     func testStructWithCodingKeys() throws {
@@ -571,12 +585,12 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 2)
-        XCTAssertEqual(result["a"] as? Int, 1)
-        XCTAssertEqual(result["b"] as? Int, 2)
+        XCTAssertEqual(result?.keys.count, 2)
+        XCTAssertEqual(result?["a"] as? Int, 1)
+        XCTAssertEqual(result?["b"] as? Int, 2)
     }
 
     func testStructWithCodingKeysNotFull() throws {
@@ -591,11 +605,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = TestStruct()
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.keys.count, 1)
-        XCTAssertEqual(result["a"] as? Int, 1)
+        XCTAssertEqual(result?.keys.count, 1)
+        XCTAssertEqual(result?["a"] as? Int, 1)
     }
 
     func testArrayOfStructs() throws {
@@ -605,11 +619,11 @@ final class DictionaryEncoderTests: XCTestCase {
 
         let testData = [TestStruct(), TestStruct()]
 
-        let result = DictionaryEncoder().encode(testData)
+        let result = try? DictionaryEncoder().encode(testData)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result.count, 2)
-        XCTAssertEqual((result[0])["x"] as? Int, 1)
-        XCTAssertEqual((result[1])["x"] as? Int, 1)
+        XCTAssertEqual(result?.count, 2)
+        XCTAssertEqual((result![0])["x"] as? Int, 1)
+        XCTAssertEqual((result![1])["x"] as? Int, 1)
     }
 }

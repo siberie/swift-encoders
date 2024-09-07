@@ -35,6 +35,10 @@ struct SingleValueContainer: SingleValueEncodingContainer {
         self.container.encode(key: codingPath, value: value)
     }
 
+    mutating func encode(_ value: Bool) throws {
+        self.container.encode(key: codingPath, value: value)
+    }
+
     mutating func encode<T>(_ value: T) throws where T: Encodable {
         if let value = value as? Date {
             container.encode(key: codingPath, value: value)
