@@ -11,15 +11,15 @@ public class DictionaryEncoder {
         self.ignoreNilValues = ignoreNilValues
     }
 
-    public func encode<T>(_ value: T) throws -> [String: Any?] where T: Encodable {
+    public func encode<T>(_ value: T) throws -> [String: Any?]? where T: Encodable {
         let encoder = DictionaryEncoding(to: RootData(), ignoreNilValues: ignoreNilValues)
         try value.encode(to: encoder)
-        return encoder.output!
+        return encoder.output
     }
 
     public func encode<T>(
         _ value: T
-    ) throws -> [[String: Any?]] where T: Encodable, T: Collection, T.Element: Encodable {
+    ) throws -> [[String: Any?]?] where T: Encodable, T: Collection, T.Element: Encodable {
         try value.map {
             try encode($0)
         }
