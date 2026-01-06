@@ -16,6 +16,13 @@ struct KeyedValueContainer<Key>: KeyedEncodingContainerProtocol where Key: Codin
         self.ignoreNilValues = ignoreNilValues
     }
 
+    mutating func encodeIfPresent(_ value: Double?, forKey key: Key) throws {
+        guard value != nil || !ignoreNilValues else {
+            return
+        }
+        container.encode(key: codingPath + [key], value: value)
+    }
+
     mutating func encodeIfPresent(_ value: Int?, forKey key: Key) throws {
         guard value != nil || !ignoreNilValues else {
             return
